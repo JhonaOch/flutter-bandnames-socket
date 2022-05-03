@@ -28,7 +28,7 @@ class SocketService with ChangeNotifier {
     
     // Dart client
      //print("object");
-   _socket = IO.io('http://192.168.100.20:3000/',IO.OptionBuilder()
+   _socket = IO.io('https://dev-backend-jh.herokuapp.com/',IO.OptionBuilder()
       .setTransports(['websocket']) // for Flutter or Dart VM
       //.disableAutoConnect()  // disable auto-connection
        // optional

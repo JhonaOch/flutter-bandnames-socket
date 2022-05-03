@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Center(
           child: Text(
-            'BandNames',
+            'Nombre de bandas',
             style: TextStyle(color: Colors.black),
           ),
         ),
@@ -200,11 +200,6 @@ class _HomePageState extends State<HomePage> {
 
 
   Widget _showGrap() {
-    Map<String, double> dataMap = Map();
-    bands.forEach((band) {
-      dataMap.putIfAbsent(band.name.toString(), () => band.votes!.toDouble());
-    });
-
     final colorList =[
       Colors.blue,
       Colors.green,
@@ -238,13 +233,19 @@ class _HomePageState extends State<HomePage> {
       Colors.orangeAccent,
     
     ];
+    Map<String, double> dataMap = Map();
 
-    return Container(
+      bands.forEach((band) {
+      dataMap.putIfAbsent(band.name.toString(), () => band.votes!.toDouble());
+    });
+
+    if (dataMap.isNotEmpty){
+     return Container(
       width: double.infinity,
       height: 200,
       child: PieChart(
         dataMap: dataMap,
-      animationDuration: Duration(milliseconds: 800),
+      animationDuration: const Duration(milliseconds: 800),
       //chartLegendSpacing: 32,
      chartRadius: MediaQuery.of(context).size.width / 3.2,
       colorList: colorList,
@@ -270,5 +271,22 @@ class _HomePageState extends State<HomePage> {
         decimalPlaces: 0,
       ),
       ));
+
+    }else{
+      return SizedBox(
+       height: MediaQuery.of(context).size.height / 1.3,
+       child: const Center(
+           child: CircularProgressIndicator(
+            // backgroundColor: Colors.black,
+             color: Color.fromARGB(255, 0, 0, 0),
+           ),
+            ),
+        );
+    }
+   
+
+    
+
+   
   }
 }
