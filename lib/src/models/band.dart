@@ -12,7 +12,7 @@ class Band{
    
     this.id, 
     this.name, 
-    this.votes = 0
+    this.votes 
    
   });
 
