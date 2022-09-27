@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   _handleActiveBands(dynamic payload) {
-    print(payload);
+    // print(payload);
 
     bands = (payload as List).map((band) => Band.fromJson(band)).toList();
 
@@ -69,14 +69,13 @@ class _HomePageState extends State<HomePage> {
                     )),
         ],
       ),
-      body:Column(
+      body: Column(
         children: [
-         
-         _showGrap(),
+          _showGrap(),
           Expanded(
             child: ListView.builder(
-            itemCount: bands.length,
-            itemBuilder: (context, index) => bandTile(bands[index])),
+                itemCount: bands.length,
+                itemBuilder: (context, index) => bandTile(bands[index])),
           ),
         ],
       ),
@@ -90,6 +89,7 @@ class _HomePageState extends State<HomePage> {
     return Dismissible(
       key: Key(band.id as String),
       direction: DismissDirection.startToEnd,
+      // ignore: todo
       //TODO: DELETE
       onDismissed: (_) =>
           socketService.socket.emit('delete-band', {'id': band.id}),
@@ -118,6 +118,7 @@ class _HomePageState extends State<HomePage> {
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
         trailing: Text('${band.votes}', style: const TextStyle(fontSize: 20)),
+        // ignore: todo
         //TODO: VOTACION
         onTap: () => socketService.socket.emit('vote-band', {'id': band.id}),
       ),
@@ -198,9 +199,8 @@ class _HomePageState extends State<HomePage> {
     Navigator.pop(context);
   }
 
-
   Widget _showGrap() {
-    final colorList =[
+    final colorList = [
       Colors.blue,
       Colors.green,
       Colors.red,
@@ -231,62 +231,57 @@ class _HomePageState extends State<HomePage> {
       Colors.yellowAccent,
       Colors.pinkAccent,
       Colors.orangeAccent,
-    
     ];
+    // ignore: prefer_collection_literals
     Map<String, double> dataMap = Map();
 
-      bands.forEach((band) {
+    // ignore: avoid_function_literals_in_foreach_calls
+    bands.forEach((band) {
       dataMap.putIfAbsent(band.name.toString(), () => band.votes!.toDouble());
     });
 
-    if (dataMap.isNotEmpty){
-     return Container(
-      width: double.infinity,
-      height: 200,
-      child: PieChart(
-        dataMap: dataMap,
-      animationDuration: const Duration(milliseconds: 800),
-      //chartLegendSpacing: 32,
-     chartRadius: MediaQuery.of(context).size.width / 3.2,
-      colorList: colorList,
-      //initialAngleInDegree: 0,
-      chartType: ChartType.ring,
-      //ringStrokeWidth: 32,
-     centerText: "Bandas",
-     
-      legendOptions: const LegendOptions(
-        showLegendsInRow: false,
-        legendPosition: LegendPosition.right,
-        showLegends: true,
-       // legendShape: _BoxShape.circle,
-        legendTextStyle: TextStyle(
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      chartValuesOptions:  const ChartValuesOptions(
-        showChartValueBackground: true,
-        showChartValues: true,
-        showChartValuesInPercentage: true,
-        showChartValuesOutside: false,
-        decimalPlaces: 0,
-      ),
-      ));
-
-    }else{
+    if (dataMap.isNotEmpty) {
       return SizedBox(
-       height: MediaQuery.of(context).size.height / 1.3,
-       child: const Center(
-           child: CircularProgressIndicator(
-            // backgroundColor: Colors.black,
-             color: Color.fromARGB(255, 0, 0, 0),
-           ),
+          width: double.infinity,
+          height: 200,
+          child: PieChart(
+            dataMap: dataMap,
+            animationDuration: const Duration(milliseconds: 800),
+            //chartLegendSpacing: 32,
+            chartRadius: MediaQuery.of(context).size.width / 3.2,
+            colorList: colorList,
+            //initialAngleInDegree: 0,
+            chartType: ChartType.ring,
+            //ringStrokeWidth: 32,
+            centerText: "Bandas",
+
+            legendOptions: const LegendOptions(
+              showLegendsInRow: false,
+              legendPosition: LegendPosition.right,
+              showLegends: true,
+              // legendShape: _BoxShape.circle,
+              legendTextStyle: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
             ),
-        );
+            chartValuesOptions: const ChartValuesOptions(
+              showChartValueBackground: true,
+              showChartValues: true,
+              showChartValuesInPercentage: true,
+              showChartValuesOutside: false,
+              decimalPlaces: 0,
+            ),
+          ));
+    } else {
+      return SizedBox(
+        height: MediaQuery.of(context).size.height / 1.3,
+        child: const Center(
+          child: CircularProgressIndicator(
+            // backgroundColor: Colors.black,
+            color: Color.fromARGB(255, 0, 0, 0),
+          ),
+        ),
+      );
     }
-   
-
-    
-
-   
   }
 }
